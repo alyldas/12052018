@@ -1,7 +1,7 @@
 /**
  * @fileOverview	Functions and procedures for Markov Alghoritm Emulator.
  * @author			Andrey Markov
- * @version			0.0.2
+ * @version			0.0.3
  */
 
 /**
@@ -133,7 +133,16 @@ function run() {
 		return;
 	}
 	var step;
+	var i = 0;
 	while ((step = doStep()) != undefined) {
+		if (i > 98) {
+			displayError("Exceeded the number of rules applied.\
+				Early termination of the algorithm.");
+			alert("Exceeded the number of rules applied.\
+				Early termination of the algorithm.");
+			return;
+		}
 		addStep(step);
+		i++;
 	};
 }

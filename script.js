@@ -82,19 +82,24 @@ var done = false;
  then returns the changes, otherwise "undefined".
  */
 function doStep() {
-    for (i = 0; i < rules.length; i++) {
-        word = document.getElementById("word").value;
-        oldWord = word;
-        word = word.replace(rules[i][1], rules[i][3]);
-        if (word != oldWord) {
-            document.getElementById("word").value = word;
-            step = oldWord + " -> ";
-            if (rules[i][2] == ".")
-                step += ".";
-            step += word;
-            return step;
+    if (!done)
+        for (i = 0; i < rules.length; i++) {
+            word = document.getElementById("word").value;
+            oldWord = word;
+            word = word.replace(rules[i][1], rules[i][3]);
+            if (word != oldWord) {
+                document.getElementById("word").value = word;
+                step = oldWord + " ->";
+                if (rules[i][2] == ".") {
+                	done = true;
+                    step += ". ";
+                }
+                else
+                	step += " ";
+                step += word;
+                return step;
+            }
         }
-    }
     return undefined;
 }
 
@@ -104,6 +109,7 @@ function doStep() {
  */
 function run() {
     rules = [];
+    done = false;
     clearSteps();
     document.getElementById("error").innerHTML = "";
     compileRulesReturn = compileRules();

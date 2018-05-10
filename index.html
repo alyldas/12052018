@@ -5,22 +5,24 @@
     <meta charset="UTF-8">
     <title>Эмулятор нормальных алгоритмов Маркова</title>
     <script type="text/javascript" src="index.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
     <!-- Input/output word textfield -->
-    <input id="ioword" placeholder="Входное слово">
+    <input id="word" placeholder="Входное слово">
     <br>
     <!-- Textarea for rules -->
     <textarea id="rules" placeholder="Правила"></textarea>
     <br>
     <!-- Run button -->
-    <button>Выполнить</button>
+    <button onclick="run()">Выполнить</button>
     <br>
     <!-- Applied rules list -->
     <p>Шаги:</p>
     <ol id="steps">
     </ol>
+    <p id="error"></p>
 </body>
 
 </html>

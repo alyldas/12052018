@@ -1,7 +1,7 @@
 /**
  * @fileOverview	Functions and procedures for Markov Alghoritm Emulator.
  * @author			Andrey Markov
- * @version			0.0.1
+ * @version			0.0.2
  */
 
 /**
@@ -10,8 +10,8 @@
  * @return	{undefined}	This function does not have a return value.
  */
 function addStep(step) {
-    document.getElementById("steps").innerHTML +=
-        "<li>" + step + "</li>";
+	document.getElementById("steps").innerHTML +=
+		"<li>" + step + "</li>";
 }
 
 /**
@@ -19,7 +19,16 @@ function addStep(step) {
  * @return	{undefined}	This function does not have a return value.
  */
 function clearSteps() {
-    document.getElementById("steps").innerHTML = "";
+	document.getElementById("steps").innerHTML = "";
+}
+
+/**
+ * Displays the error message to the user.
+ * @param	{string}	Error message.
+ * @return	{undefined}	This function does not have a return value.
+ */
+function displayError(error) {
+	document.getElementById("error").innerHTML = error;
 }
 
 /**
@@ -33,7 +42,7 @@ function clearSteps() {
  * @return	{compiledRule}
  */
 function compileRule(rule) {
-    return /\s*(\S*)\s*[=-]>(\.)*\s*(\S*)\s*/i.exec(rule);
+	return /\s*(\S*)\s*[=-]>(\.)*\s*(\S*)\s*/i.exec(rule);
 }
 
 /**
@@ -42,10 +51,10 @@ function compileRule(rule) {
  * @return	{boolean}
  */
 function checkRule(rule) {
-    if ((!rule) || (rule && rule[1] == rule[3]))
-        return false
-    else
-        return true;
+	if ((!rule) || (rule && rule[1] == rule[3]))
+		return false
+	else
+		return true;
 }
 
 /**
@@ -60,14 +69,14 @@ var rules = [];
  On error, returns the rule in which the error occurred.
  */
 function compileRules() {
-    rawRules = document.getElementById("rules").value.split('\n');
-    for (i = 0; i < rawRules.length; i++) {
-        rule = compileRule(rawRules[i]);
-        if (checkRule(rule))
-            rules.push(rule)
-        else
-            return rawRules[i];
-    }
+	rawRules = document.getElementById("rules").value.split('\n');
+	for (i = 0; i < rawRules.length; i++) {
+		rule = compileRule(rawRules[i]);
+		if (checkRule(rule))
+			rules.push(rule)
+		else
+			return rawRules[i];
+	}
 }
 
 /**
@@ -82,25 +91,26 @@ var done = false;
  then returns the changes, otherwise "undefined".
  */
 function doStep() {
-    if (!done)
-        for (i = 0; i < rules.length; i++) {
-            word = document.getElementById("word").value;
-            oldWord = word;
-            word = word.replace(rules[i][1], rules[i][3]);
-            if (word != oldWord) {
-                document.getElementById("word").value = word;
-                step = oldWord + " ->";
-                if (rules[i][2] == ".") {
-                	done = true;
-                    step += ". ";
-                }
-                else
-                	step += " ";
-                step += word;
-                return step;
-            }
-        }
-    return undefined;
+	if (!done)
+		for (i = 0; i < rules.length; i++) {
+			word = document.getElementById("word").value;
+			oldWord = word;
+			word = word.replace(rules[i][1], rules[i][3]);
+			if (word != oldWord) {
+				document.getElementById("word").value = word;
+
+				// Shorthand does not work properly.
+				step = oldWord + " ->";
+				if (rules[i][2] == ".") {
+					done = true;
+					step += ". ";
+				} else
+					step += " ";
+				step += word;
+
+				return step;
+			}
+		}
 }
 
 /**
@@ -108,23 +118,22 @@ function doStep() {
  * @return {undefined} This procedure does not have a return value.
  */
 function run() {
-    rules = [];
-    done = false;
-    clearSteps();
-    document.getElementById("error").innerHTML = "";
-    compileRulesReturn = compileRules();
-    if (compileRulesReturn) {
-        document.getElementById("error").innerHTML =
-            "Ошибка в правиле \"" + compileRulesReturn + "\"";
-        return;
-    }
-    if (rules.length == 0) {
-        document.getElementById("error").innerHTML =
-            "Введите правила";
-        return;
-    }
-    var step;
-    while ((step = doStep()) != undefined) {
-        addStep(step);
-    };
+	rules = []; // clear rules
+	done = false; // reset done flag
+	clearSteps(); // clear user-side
+	displayError(""); // reset error
+	compileRulesReturn = compileRules();
+	if (compileRulesReturn) {
+		displayError("Ошибка в правиле \"" +
+			compileRulesReturn + "\".");
+		return;
+	}
+	if (rules.length == 0) {
+		displayError("Введите правила.");
+		return;
+	}
+	var step;
+	while ((step = doStep()) != undefined) {
+		addStep(step);
+	};
 }

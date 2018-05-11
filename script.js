@@ -124,8 +124,8 @@ function run() {
 	displayError(""); // reset error
 	compileRulesReturn = compileRules();
 	if (compileRulesReturn) {
-		displayError("Ошибка в правиле \"" +
-			compileRulesReturn + "\".");
+		displayError("Ошибка в правиле <code>\"" +
+			compileRulesReturn + "\"</code>.");
 		return;
 	}
 	if (rules.length == 0) {
